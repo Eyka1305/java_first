@@ -8,6 +8,9 @@ public class ContactModificationTests extends TestBase {
     @Test
     public void testContactModification() throws InterruptedException {
         app.getNavigationHelper().returnToHomePage();
+        if(! app.getContactHelper().isThereAContact()) {
+            app.getContactHelper().createContact(new ContactData("Sarah", "Connor", "address", "2025550114", "email@gmail.com", "test1"));
+        }
         Thread.currentThread().sleep(1000);
         app.getContactHelper().initContactModification();
         app.getContactHelper().fillContactForm(new ContactData("Sarah", "Connor", "address", "2025550114", "email@gmail.com", null), false);

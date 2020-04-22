@@ -8,8 +8,11 @@ import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
 
 public class ContactHelper extends HelperBase {
-    public ContactHelper(WebDriver wd) {
+    private NavigationHelper navigationHelper;
+
+    public ContactHelper(WebDriver wd, NavigationHelper navigationHelper) {
         super(wd);
+        this.navigationHelper = navigationHelper;
     }
     public void initContactCreation() {
         click(By.xpath("(//input[@name='submit'])[2]"));
@@ -30,7 +33,7 @@ public class ContactHelper extends HelperBase {
     }
 
     public void selectContact() {
-        click(By.id("3"));
+        click(By.name("selected[]"));
     }
 
     public void deleteSelectedContacts() {
@@ -44,5 +47,16 @@ public class ContactHelper extends HelperBase {
 
     public void submitContactModification() {
         click(By.xpath("(//input[@name='update'])[2]"));
+    }
+
+    public void createContact(ContactData contact) {
+        this.navigationHelper.goToNewContactPage();
+        fillContactForm(contact, true);
+        initContactCreation();
+        this.navigationHelper.returnToHomePage();
+    }
+
+    public boolean isThereAContact() {
+        return isElementPresent(By.name("selected"));
     }
 }
