@@ -4,6 +4,8 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 
+import java.util.List;
+
 public class ContactModificationTests extends TestBase {
 
     @Test
@@ -13,14 +15,14 @@ public class ContactModificationTests extends TestBase {
             app.getContactHelper().createContact(new ContactData("Sarah", "Connor", "address", "2025550114", "email@gmail.com", "test1"));
         }
 
-        int before = app.getContactHelper().getContactCount();
+        List<ContactData> before = app.getContactHelper().getContactList();
 
-        app.getContactHelper().initContactModification(before - 1);
+        app.getContactHelper().initContactModification(before.size() - 1);
         app.getContactHelper().fillContactForm(new ContactData("Sarah", "Connor", "address", "2025550114", "email@gmail.com", null), false);
         app.getContactHelper().submitContactModification();
         app.getNavigationHelper().returnToHomePage();
 
-        int after = app.getContactHelper().getContactCount();
+        List<ContactData> after = app.getContactHelper().getContactList();
         Assert.assertEquals(after, before);
     }
 }
