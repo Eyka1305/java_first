@@ -4,31 +4,31 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
+import ru.stqa.pft.addressbook.model.Contacts;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.*;
+import static org.testng.Assert.*;
 
 public class ContactCreationTests extends TestBase {
   private WebDriver wd;
 
   @Test
   public void testContactCreation() throws Exception {
-    Set<ContactData> before = app.contact().all();
+    Contacts before = app.contact().all();
 
     ContactData contact = new ContactData().withFirstName("Sarah").withLastName("Connor").withGroup("test1");
     app.contact().create(contact);
 
-    Set<ContactData> after = app.contact().all();
-    Assert.assertEquals(after.size(), before.size() + 1);
+    Contacts after = app.contact().all();
+    assertEquals(after.size(), before.size() + 1);
 
     int max = after.stream().mapToInt((c) -> c.getId()).max().getAsInt();
     contact.withId(max);
-    before.add(contact);
-    Assert.assertEquals(new HashSet<Object>(before), new HashSet<Object>(after));
+    assertThat(after, equalTo(before.withAdded(contact)));
+
   }
 
   private boolean isElementPresent(By by) {
