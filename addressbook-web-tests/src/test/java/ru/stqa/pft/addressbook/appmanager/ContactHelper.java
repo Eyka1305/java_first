@@ -1,7 +1,6 @@
 package ru.stqa.pft.addressbook.appmanager;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
@@ -30,7 +29,9 @@ public class ContactHelper extends HelperBase {
         type(By.name("email"), contactData.getEmail());
 
         if (creation) {
-            new Select(wd.findElement(By.name("new_group"))).selectByVisibleText(contactData.getGroup());
+            String groupName = contactData.getGroup();
+            Select groupSelect = new Select(wd.findElement(By.name("new_group")));
+            groupSelect.selectByVisibleText(groupName);
         }   else {
             Assert.assertFalse(isElementPresent(By.name("new_group")));
         }
@@ -54,11 +55,24 @@ public class ContactHelper extends HelperBase {
         click(By.xpath("(//input[@name='update'])[2]"));
     }
 
-    public void createContact(ContactData contact) {
-        this.navigationHelper.goToNewContactPage();
+    public void create(ContactData contact) {
+        this.navigationHelper.newContactPage();
         fillContactForm(contact, true);
         initContactCreation();
-        this.navigationHelper.returnToHomePage();
+        this.navigationHelper.homePage();
+    }
+
+    public void modify(int index, ContactData contact) {
+        initContactModification(index);
+        fillContactForm(contact, false);
+        submitContactModification();
+        this.navigationHelper.homePage();
+    }
+
+    public void delete(int index) {
+        selectContact(index);
+        deleteSelectedContacts();
+        this.navigationHelper.homePage();
     }
 
     public boolean isThereAContact() {
@@ -69,7 +83,7 @@ public class ContactHelper extends HelperBase {
        return wd.findElements(By.name("selected[]")).size();
     }
 
-    public List<ContactData> getContactList() {
+    public List<ContactData> list() {
         List<ContactData> result = new ArrayList<ContactData>();
         List<WebElement> elements = wd.findElements(By.cssSelector("tr[name=entry]"));
         for (WebElement row : elements) {
@@ -78,7 +92,7 @@ public class ContactHelper extends HelperBase {
             String lastName = cells.get(1).getText();
             int id = Integer.parseInt(row.findElement(By.tagName("input")).getAttribute("value"));
 
-            ContactData contact = new ContactData(id, firstName, lastName, null, null, null, null);
+            ContactData contact = new ContactData().withId(id).withFirstName(firstName).withLastName(lastName);
             result.add(contact);
         }
         return result;

@@ -3,33 +3,49 @@ package ru.stqa.pft.addressbook.model;
 import java.util.Objects;
 
 public class ContactData {
-    private int id;
-    private final String firstName;
-    private final String lastName;
-    private final String address;
-    private final String mobilePhone;
-    private final String email;
+    private int id = Integer.MAX_VALUE;
+    private String firstName;
+    private String lastName;
+    private String address;
+    private String mobilePhone;
+    private String email;
     private String group;
 
-    public ContactData(String firstName, String lastName, String address, String mobilePhone, String email, String group) {
-        this.id = 0;
+
+    public ContactData withId(int id) {
+        this.id = id;
+        return this;
+    }
+    public ContactData withFirstName(String firstName) {
         this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-        this.mobilePhone = mobilePhone;
-        this.email = email;
-        this.group = group;
+        return this;
     }
 
-    public ContactData(int id, String firstName, String lastName, String address, String mobilePhone, String email, String group) {
-        this.id = id;
-        this.firstName = firstName;
+    public ContactData withLastName(String lastName) {
         this.lastName = lastName;
-        this.address = address;
-        this.mobilePhone = mobilePhone;
-        this.email = email;
-        this.group = group;
+        return this;
     }
+
+    public ContactData withAddress(String address) {
+        this.address = address;
+        return this;
+    }
+
+    public ContactData withMobilePhone(String mobilePhone) {
+        this.mobilePhone = mobilePhone;
+        return this;
+    }
+
+    public ContactData withEmail(String email) {
+        this.email = email;
+        return this;
+    }
+
+    public ContactData withGroup(String group) {
+        this.group = group;
+        return this;
+    }
+
 
 
     public int getId() {
@@ -60,9 +76,7 @@ public class ContactData {
         return group;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+
 
     @Override
     public boolean equals(Object o) {
