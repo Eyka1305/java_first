@@ -37,7 +37,6 @@ public class GroupHelper extends HelperBase {
         click(By.xpath("(//input[@name='delete'])[2]"));
     }
 
-
     public void selectGroupById(int id) {
         wd.findElement(By.cssSelector("input[value = '" + id + "']")).click();
     }
@@ -64,7 +63,6 @@ public class GroupHelper extends HelperBase {
         submitGroupModification();
         returnToGroupPage();
     }
-
 
     public void delete(GroupData group) {
         selectGroupById(group.getId());

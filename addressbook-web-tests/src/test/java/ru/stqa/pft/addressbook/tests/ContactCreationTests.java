@@ -10,21 +10,22 @@ import ru.stqa.pft.addressbook.model.ContactData;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ContactCreationTests extends TestBase {
   private WebDriver wd;
 
   @Test
   public void testContactCreation() throws Exception {
-    List<ContactData> before = app.contact().list();
+    Set<ContactData> before = app.contact().all();
 
     ContactData contact = new ContactData().withFirstName("Sarah").withLastName("Connor").withGroup("test1");
     app.contact().create(contact);
 
-    List<ContactData> after = app.contact().list();
+    Set<ContactData> after = app.contact().all();
     Assert.assertEquals(after.size(), before.size() + 1);
 
-    int max = after.stream().max((o1, o2) -> Integer.compare(o1.getId(), o2.getId())).get().getId();
+    int max = after.stream().mapToInt((c) -> c.getId()).max().getAsInt();
     contact.withId(max);
     before.add(contact);
     Assert.assertEquals(new HashSet<Object>(before), new HashSet<Object>(after));
