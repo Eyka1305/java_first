@@ -28,7 +28,7 @@ public class ContactDeletionTests extends TestBase {
         ContactData deletedContact = before.iterator().next();
 
         app.contact().delete(deletedContact);
-        Thread.sleep(3000);
+        Thread.sleep(1000);
 
         Contacts after = app.contact().all();
         assertEquals(after.size(), before.size() - 1);

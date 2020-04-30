@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
+import ru.stqa.pft.addressbook.model.Groups;
 
 import java.util.HashSet;
 import java.util.List;
@@ -62,6 +63,7 @@ public class ContactHelper extends HelperBase {
         this.navigationHelper.newContactPage();
         fillContactForm(contact, true);
         initContactCreation();
+        contactCache = null;
         this.navigationHelper.homePage();
     }
 
@@ -69,6 +71,7 @@ public class ContactHelper extends HelperBase {
         initContactModificationById(contact.getId());
         fillContactForm(contact, false);
         submitContactModification();
+        contactCache = null;
         this.navigationHelper.homePage();
     }
 
@@ -76,6 +79,7 @@ public class ContactHelper extends HelperBase {
     public void delete(ContactData contact) {
         selectContactById(contact.getId());
         deleteSelectedContacts();
+        contactCache = null;
         this.navigationHelper.homePage();
     }
 
@@ -87,9 +91,13 @@ public class ContactHelper extends HelperBase {
        return wd.findElements(By.name("selected[]")).size();
     }
 
+    private Contacts contactCache = null;
 
     public Contacts all() {
-        Contacts result = new Contacts();
+        if (contactCache != null) {
+            return new Contacts(contactCache);
+        }
+        contactCache = new Contacts();
         List<WebElement> elements = wd.findElements(By.cssSelector("tr[name=entry]"));
         for (WebElement row : elements) {
             List<WebElement> cells = row.findElements(By.cssSelector("td"));
@@ -98,8 +106,8 @@ public class ContactHelper extends HelperBase {
             int id = Integer.parseInt(row.findElement(By.tagName("input")).getAttribute("value"));
 
             ContactData contact = new ContactData().withId(id).withFirstName(firstName).withLastName(lastName);
-            result.add(contact);
+            contactCache.add(contact);
         }
-        return result;
+        return contactCache;
     }
 }
