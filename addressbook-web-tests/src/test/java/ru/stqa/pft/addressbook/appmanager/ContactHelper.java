@@ -103,11 +103,26 @@ public class ContactHelper extends HelperBase {
             List<WebElement> cells = row.findElements(By.cssSelector("td"));
             String firstName = cells.get(2).getText();
             String lastName = cells.get(1).getText();
+            String[] phones = cells.get(5).getText().split("\n");
             int id = Integer.parseInt(row.findElement(By.tagName("input")).getAttribute("value"));
 
-            ContactData contact = new ContactData().withId(id).withFirstName(firstName).withLastName(lastName);
+            ContactData contact = new ContactData().withId(id).withFirstName(firstName).withLastName(lastName)
+                    .withHomePhone(phones[0]).withMobilePhone(phones[1]).withWorkPhone(phones[2]);
             contactCache.add(contact);
         }
         return contactCache;
+    }
+
+    public ContactData infoFromEditForm(ContactData contact) {
+        initContactModificationById(contact.getId());
+        String firstName = wd.findElement(By.name("firstname")).getAttribute("value");
+        String lastName = wd.findElement(By.name("lastname")).getAttribute("value");
+        String home = wd.findElement(By.name("home")).getAttribute("value");
+        String mobile = wd.findElement(By.name("mobile")).getAttribute("value");
+        String work = wd.findElement(By.name("work")).getAttribute("value");
+        wd.navigate().back();
+        return new ContactData()
+                .withId(contact.getId()).withFirstName(firstName).withLastName(lastName)
+                .withHomePhone(home).withMobilePhone(mobile).withWorkPhone(work);
     }
 }
