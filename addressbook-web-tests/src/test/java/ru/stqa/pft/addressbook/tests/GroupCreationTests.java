@@ -25,4 +25,16 @@ public class GroupCreationTests extends TestBase{
     assertThat(after, equalTo(before.withAdded(group)));
   }
 
+  @Test
+  public void testBadGroupCreation() throws Exception {
+    app.goTo().groupPage();
+
+    Groups before = app.group().all();
+    GroupData group = new GroupData().withName("test2'");
+    app.group().create(group);
+    assertThat(app.group().count(), equalTo(before.size()));
+    Groups after = app.group().all();
+    assertThat(after, equalTo(before));
+  }
 }
+
