@@ -48,10 +48,10 @@ public class ContactDataGenerator {
     private List<ContactData> generateContacts(int count) {
         List<ContactData> contacts = new ArrayList<ContactData>();
         for (int i = 0; i < count; i++) {
-            contacts.add(new ContactData().withFirstName(String.format("FirstName %s", i))
-                    .withLastName(String.format("LastName %s", i)));
+            ContactData newContact = new ContactData().withFirstName(String.format("FirstName %s", i))
+                                                      .withLastName(String.format("LastName %s", i));
+            contacts.add(newContact);
         }
         return contacts;
     }
-
 }

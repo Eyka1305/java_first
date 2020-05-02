@@ -30,8 +30,12 @@ public class ContactHelper extends HelperBase {
         attach(By.name("photo"), contactData.getPhoto());
 
         if (creation) {
-            String groupName = contactData.getGroup();
             Select groupSelect = new Select(wd.findElement(By.name("new_group")));
+            String groupName = contactData.getGroup();
+            if (groupName == null) {
+                List<WebElement> options = groupSelect.getOptions();
+                groupName = options.get(0).getText();
+            }
             groupSelect.selectByVisibleText(groupName);
         }   else {
             Assert.assertFalse(isElementPresent(By.name("new_group")));
