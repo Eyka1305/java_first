@@ -14,6 +14,8 @@ dependencies {
     testCompile group: 'org.hamcrest', name: 'hamcrest', version: '2.2'
     // https://mvnrepository.com/artifact/com.beust/jcommander
     compile group: 'com.beust', name: 'jcommander', version: '1.78'
+    // https://mvnrepository.com/artifact/com.thoughtworks.xstream/xstream
+    compile group: 'com.thoughtworks.xstream', name: 'xstream', version: '1.4.12'
 
 }
 
