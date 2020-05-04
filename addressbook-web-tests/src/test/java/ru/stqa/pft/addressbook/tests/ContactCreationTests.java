@@ -1,15 +1,13 @@
 package ru.stqa.pft.addressbook.tests;
 
 import com.thoughtworks.xstream.XStream;
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoAlertPresentException;
-import org.openqa.selenium.NoSuchElementException;
+
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
-import ru.stqa.pft.addressbook.model.GroupData;
+
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -22,6 +20,7 @@ import java.util.stream.Collectors;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.*;
 import static org.testng.Assert.*;
+
 
 public class ContactCreationTests extends TestBase {
   private WebDriver wd;
