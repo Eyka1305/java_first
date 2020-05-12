@@ -35,7 +35,7 @@ public class GroupHelper extends HelperBase {
     }
 
     public void deleteSelectedGroups() {
-        click(By.xpath("(//input[@name='delete'])[2]"));
+        click(By.cssSelector("input[name=delete]"));
     }
 
     public void selectGroupById(int id) {
@@ -68,6 +68,7 @@ public class GroupHelper extends HelperBase {
     }
 
     public void delete(GroupData group) {
+
         selectGroupById(group.getId());
         deleteSelectedGroups();
         groupCache = null;
