@@ -3,10 +3,12 @@ package ru.stqa.pft.addressbook.tests;
 import com.thoughtworks.xstream.XStream;
 
 import org.openqa.selenium.WebDriver;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
+import ru.stqa.pft.addressbook.model.GroupData;
 
 
 import java.io.BufferedReader;
@@ -40,11 +42,24 @@ public class ContactCreationTests extends TestBase {
     return contacts.stream().map((c) -> new Object[] {c}).collect(Collectors.toList()).iterator();
   }
 
+  @BeforeMethod
+  public void ensurePreconditions() {
+    if (app.db().groups().size() == 0) {
+      GroupData group = new GroupData().withName("test cc")
+                                       .withHeader("header cc")
+                                       .withFooter("footer cc");
+      app.group().create(group);
+    }
+  }
 
   @Test(dataProvider = "validContacts")
   public void testContactCreation(ContactData contact) throws Exception {
+
     Contacts before = app.db().contacts();
    // File photo = new File("src/test/resources/stru.png");
+    GroupData group = app.db().groups().iterator().next();
+    contact.inGroup(group);
+
     app.contact().create(contact);
     assertEquals(app.contact().count(), before.size() + 1);
     Contacts after = app.db().contacts();

@@ -7,6 +7,9 @@ import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
+import ru.stqa.pft.addressbook.model.GroupData;
+import ru.stqa.pft.addressbook.model.Groups;
+
 
 import java.util.List;
 
@@ -17,7 +20,7 @@ public class ContactHelper extends HelperBase {
         super(wd);
         this.navigationHelper = navigationHelper;
     }
-    public void initContactCreation() {
+    public void submitContactCreation() {
         click(By.xpath("(//input[@name='submit'])[2]"));
     }
 
@@ -31,10 +34,12 @@ public class ContactHelper extends HelperBase {
 
         if (creation) {
             Select groupSelect = new Select(wd.findElement(By.name("new_group")));
-            String groupName = contactData.getGroup();
-            if (groupName == null) {
+            String groupName = "";
+            if (contactData.getGroups().size() == 0) {
                 List<WebElement> options = groupSelect.getOptions();
                 groupName = options.get(0).getText();
+            } else {
+                groupName = contactData.getGroups().iterator().next().getName();
             }
             groupSelect.selectByVisibleText(groupName);
         }   else {
@@ -63,8 +68,8 @@ public class ContactHelper extends HelperBase {
 
     public void create(ContactData contact) {
         this.navigationHelper.newContactPage();
-        fillContactForm(contact, true);
-        initContactCreation();
+        fillContactForm(contact,true);
+        submitContactCreation();
         contactCache = null;
         this.navigationHelper.homePage();
     }
