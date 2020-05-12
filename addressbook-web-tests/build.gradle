@@ -20,6 +20,7 @@ dependencies {
     compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.20'
     // https://mvnrepository.com/artifact/org.hibernate/hibernate-core
     compile group: 'org.hibernate', name: 'hibernate-core', version: '5.4.15.Final'
+    compile 'com.google.code.gson:gson:2.2.+'
 }
 
 task testGroups(type: Test) {
