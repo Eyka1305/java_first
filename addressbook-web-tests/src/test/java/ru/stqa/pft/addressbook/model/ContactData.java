@@ -188,9 +188,11 @@ public class ContactData {
     }
 
     public File getPhoto() {
+        if (photo == null) {
+            return null;
+        }
         return new File(photo);
     }
-
 
 
     @Override
@@ -200,12 +202,15 @@ public class ContactData {
         ContactData that = (ContactData) o;
         return id == that.id &&
                 Objects.equals(firstName, that.firstName) &&
-                Objects.equals(lastName, that.lastName);
+                Objects.equals(lastName, that.lastName) &&
+                Objects.equals(address, that.address) &&
+                Objects.equals(mobilePhone, that.mobilePhone) &&
+                Objects.equals(email1, that.email1);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName);
+        return Objects.hash(id, firstName, lastName, address, mobilePhone, email1);
     }
 
     @Override

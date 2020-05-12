@@ -14,8 +14,8 @@ public class ContactModificationTests extends TestBase {
 
     @BeforeMethod
     public void ensurePreconditions() {
-        app.goTo().homePage();
-        if(app.contact().all().size() == 0) {
+        if (app.db().contacts().size() == 0) {
+            app.goTo().homePage();
             app.contact().create(new ContactData().withFirstName("Sarah").withLastName("Connor").withGroup("test1"));
         }
     }
@@ -23,16 +23,17 @@ public class ContactModificationTests extends TestBase {
     @Test
     public void testContactModification() throws InterruptedException {
 
-        Contacts before = app.contact().all();
+        Contacts before = app.db().contacts();
         ContactData modifiedContact = before.iterator().next();
         int index = before.size() - 1;
         ContactData contact = new ContactData()
                 .withId(modifiedContact.getId()).withFirstName("Sarah").withLastName("Connor").withAddress("address")
                 .withMobilePhone("2025550114").withEmail1("email@gmail.com").withGroup("test1");
 
+        app.goTo().homePage();
         app.contact().modify(contact);
         assertEquals(app.contact().count(), before.size());
-        Contacts after = app.contact().all();
+        Contacts after = app.db().contacts();
         assertThat(after, equalTo(before.without(modifiedContact).withAdded(contact)));
     }
 

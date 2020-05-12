@@ -43,11 +43,11 @@ public class ContactCreationTests extends TestBase {
 
   @Test(dataProvider = "validContacts")
   public void testContactCreation(ContactData contact) throws Exception {
-    Contacts before = app.contact().all();
+    Contacts before = app.db().contacts();
    // File photo = new File("src/test/resources/stru.png");
     app.contact().create(contact);
     assertEquals(app.contact().count(), before.size() + 1);
-    Contacts after = app.contact().all();
+    Contacts after = app.db().contacts();
     int max = after.stream().mapToInt((c) -> c.getId()).max().getAsInt();
     contact.withId(max);
     assertThat(after, equalTo(before.withAdded(contact)));
