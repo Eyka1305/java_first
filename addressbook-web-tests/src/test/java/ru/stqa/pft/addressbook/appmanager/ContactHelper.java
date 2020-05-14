@@ -8,7 +8,6 @@ import org.testng.Assert;
 import ru.stqa.pft.addressbook.model.ContactData;
 import ru.stqa.pft.addressbook.model.Contacts;
 import ru.stqa.pft.addressbook.model.GroupData;
-import ru.stqa.pft.addressbook.model.Groups;
 
 
 import java.util.List;
@@ -139,5 +138,13 @@ public class ContactHelper extends HelperBase {
                 .withId(contact.getId()).withFirstName(firstName).withLastName(lastName)
                 .withHomePhone(home).withMobilePhone(mobile).withWorkPhone(work).withAddress(address)
                 .withEmail1(email1).withEmail2(email2).withEmail3(email3);
+    }
+
+    public void addToGroup(ContactData contact, GroupData group) {
+        this.navigationHelper.homePage();
+        selectContactById(contact.getId());
+        Select groupSelect = new Select(wd.findElement(By.name("to_group")));
+        groupSelect.selectByValue(String.valueOf(group.getId()));
+        click(By.cssSelector("input[value = 'Add to']"));
     }
 }

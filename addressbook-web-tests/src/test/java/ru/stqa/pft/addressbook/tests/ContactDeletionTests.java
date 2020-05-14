@@ -16,7 +16,10 @@ public class ContactDeletionTests extends TestBase {
     @BeforeMethod
     public void ensurePreconditions() {
         if (app.db().groups().size() == 0) {
-            // CREATE GROUP
+            GroupData group = new GroupData().withName("test1")
+                    .withHeader("header1")
+                    .withFooter("footer1");
+            app.group().create(group);
         }
         GroupData group = app.db().groups().iterator().next();
         if (app.db().contacts().size() == 0) {
