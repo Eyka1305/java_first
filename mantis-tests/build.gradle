@@ -12,21 +12,21 @@ dependencies {
     compile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.0.0-alpha-5'
     // https://mvnrepository.com/artifact/org.hamcrest/hamcrest
     testCompile group: 'org.hamcrest', name: 'hamcrest', version: '2.2'
+    compile 'org.apache.httpcomponents:httpclient:4.5.12'
+    // https://mvnrepository.com/artifact/commons-net/commons-net
+    compile group: 'commons-net', name: 'commons-net', version: '3.6'
+    // https://mvnrepository.com/artifact/org.subethamail/org.motechproject.org.subethamail
+    testCompile group: 'org.subethamail', name: 'subethasmtp', version: '3.1.7'
+    // https://mvnrepository.com/artifact/javax.mail/mail
+    compile group: 'javax.mail', name: 'mail', version: '1.5.0-b01'
+    // https://mvnrepository.com/artifact/ru.lanwen.verbalregex/java-verbal-expressions
+    compile group: 'ru.lanwen.verbalregex', name: 'java-verbal-expressions', version: '1.6'
+
+
+
+
 
 }
-
- test {
-    useTestNG {
-        suites 'src/test/resources/testng.xml'
-    }
-    if (project.hasProperty('browser')) {
-        systemProperty 'browser', "${browser}"
-    }
-    if (project.hasProperty('verifyUI')) {
-        systemProperty 'verifyUI', "${verifyUI}"
-    }
-}
-
 
 test {
     useTestNG()

@@ -32,7 +32,7 @@ public class ContactGroupInteractionsTests extends TestBase {
     }
 
     @Test
-    public void testAddContactToGroup() {
+    public void testAddContactToGroup() throws InterruptedException {
         Groups allGroups = app.db().groups();
         GroupData group = allGroups.iterator().next();
         Contacts before = group.getContacts();
@@ -56,7 +56,51 @@ public class ContactGroupInteractionsTests extends TestBase {
             }
         }
         app.contact().addToGroup(modifiedContact, group);
-        Contacts after = group.getContacts();
+        GroupData groupAfter = null;
+        Groups groupsAfter = app.db().groups();
+        for (GroupData gr : groupsAfter) {
+            if (gr.getId() == group.getId()) {
+                groupAfter = gr;
+                break;
+            }
+        }
+        Contacts after = groupAfter.getContacts();
         assertThat(after, equalTo(before.withAdded(modifiedContact)));
+    }
+
+    @Test
+    public void testDeleteContactFromGroup() throws InterruptedException {
+        Groups allGroups = app.db().groups();
+        GroupData group = allGroups.iterator().next();
+        Contacts before = group.getContacts();
+        ContactData modifiedContact = null;
+        if (before.size() != 0) {
+            modifiedContact = before.iterator().next();
+
+        } else {
+            app.goTo().homePage();
+            app.contact().create(new ContactData().withFirstName("Sarah").withLastName("Connor").inGroup(group));
+            GroupData reloadedGroup = null;
+            Groups reloadedGroups = app.db().groups();
+            for (GroupData gr : reloadedGroups) {
+                if (gr.getId() == group.getId()) {
+                    reloadedGroup = gr;
+                    break;
+                }
+            }
+        }
+
+        app.contact().deleteFromGroup(modifiedContact, group);
+
+        GroupData groupAfter = null;
+        Groups groupsAfter = app.db().groups();
+        for (GroupData g : groupsAfter) {
+            if (g.getId() == group.getId()) {
+                groupAfter = g;
+                break;
+            }
+        }
+        Contacts after = groupAfter.getContacts();
+        assertThat(after, equalTo(before.without(modifiedContact)));
     }
 }

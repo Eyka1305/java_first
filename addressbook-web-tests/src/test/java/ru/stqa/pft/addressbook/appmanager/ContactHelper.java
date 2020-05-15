@@ -147,4 +147,12 @@ public class ContactHelper extends HelperBase {
         groupSelect.selectByValue(String.valueOf(group.getId()));
         click(By.cssSelector("input[value = 'Add to']"));
     }
+
+    public void deleteFromGroup(ContactData contact, GroupData group) {
+        this.navigationHelper.homePage();
+        Select groupSelect = new Select(wd.findElement(By.name("group")));
+        groupSelect.selectByValue(String.valueOf(group.getId()));
+        selectContactById(contact.getId());
+        click(By.cssSelector("input[name = 'remove']"));
+    }
 }
